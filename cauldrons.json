@@ -1,0 +1,378 @@
+{
+  "cauldrons": [
+    {
+      "id": "cauldron_001",
+      "name": "Crimson Brew Cauldron",
+      "latitude": 33.2148,
+      "longitude": -97.1331,
+      "max_volume": 1000,
+      "type": "premium",
+      "radius_meters": 6.32,
+      "radius_collection_factor": 948
+    },
+    {
+      "id": "cauldron_002",
+      "name": "Sapphire Mist Cauldron",
+      "latitude": 33.2155,
+      "longitude": -97.1325,
+      "max_volume": 800,
+      "type": "standard",
+      "radius_meters": 5.66,
+      "radius_collection_factor": 849
+    },
+    {
+      "id": "cauldron_003",
+      "name": "Golden Elixir Cauldron",
+      "latitude": 33.2142,
+      "longitude": -97.1338,
+      "max_volume": 1200,
+      "type": "premium",
+      "radius_meters": 6.93,
+      "radius_collection_factor": 1040
+    },
+    {
+      "id": "cauldron_004",
+      "name": "Emerald Dreams Cauldron",
+      "latitude": 33.216,
+      "longitude": -97.1318,
+      "max_volume": 750,
+      "type": "standard",
+      "radius_meters": 5.48,
+      "radius_collection_factor": 822
+    },
+    {
+      "id": "cauldron_005",
+      "name": "Violet Vapors Cauldron",
+      "latitude": 33.2135,
+      "longitude": -97.1345,
+      "max_volume": 900,
+      "type": "premium",
+      "radius_meters": 6.0,
+      "radius_collection_factor": 900
+    },
+    {
+      "id": "cauldron_006",
+      "name": "Crystal Clear Cauldron",
+      "latitude": 33.2165,
+      "longitude": -97.131,
+      "max_volume": 650,
+      "type": "standard",
+      "radius_meters": 5.1,
+      "radius_collection_factor": 765
+    },
+    {
+      "id": "cauldron_007",
+      "name": "Ruby Radiance Cauldron",
+      "latitude": 33.2128,
+      "longitude": -97.1352,
+      "max_volume": 1100,
+      "type": "premium",
+      "radius_meters": 6.63,
+      "radius_collection_factor": 994
+    },
+    {
+      "id": "cauldron_008",
+      "name": "Azure Breeze Cauldron",
+      "latitude": 33.217,
+      "longitude": -97.1305,
+      "max_volume": 700,
+      "type": "standard",
+      "radius_meters": 5.29,
+      "radius_collection_factor": 794
+    },
+    {
+      "id": "cauldron_009",
+      "name": "Amber Glow Cauldron",
+      "latitude": 33.212,
+      "longitude": -97.136,
+      "max_volume": 950,
+      "type": "premium",
+      "radius_meters": 6.16,
+      "radius_collection_factor": 924
+    },
+    {
+      "id": "cauldron_010",
+      "name": "Pearl Shimmer Cauldron",
+      "latitude": 33.2175,
+      "longitude": -97.13,
+      "max_volume": 850,
+      "type": "standard",
+      "radius_meters": 5.83,
+      "radius_collection_factor": 874
+    },
+    {
+      "id": "cauldron_011",
+      "name": "Onyx Shadow Cauldron",
+      "latitude": 33.2115,
+      "longitude": -97.1368,
+      "max_volume": 1050,
+      "type": "premium",
+      "radius_meters": 6.48,
+      "radius_collection_factor": 972
+    },
+    {
+      "id": "cauldron_012",
+      "name": "Jade Serenity Cauldron",
+      "latitude": 33.218,
+      "longitude": -97.1295,
+      "max_volume": 600,
+      "type": "standard",
+      "radius_meters": 4.9,
+      "radius_collection_factor": 735
+    }
+  ],
+  "enchanted_market": {
+    "id": "market_001",
+    "name": "The Enchanted Market",
+    "latitude": 33.2148,
+    "longitude": -97.13,
+    "description": "Central trading hub for all potion commerce"
+  },
+  "couriers": [
+    {
+      "courier_id": "courier_witch_01_01",
+      "name": "Witch Aster",
+      "max_carrying_capacity": 500,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Aster works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_02",
+      "name": "Witch Blossom",
+      "max_carrying_capacity": 500,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Blossom works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_03",
+      "name": "Witch Ivy",
+      "max_carrying_capacity": 500,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Ivy works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_04",
+      "name": "Witch Juniper",
+      "max_carrying_capacity": 500,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Juniper works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_01",
+      "name": "Witch Cedar",
+      "max_carrying_capacity": 500,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Cedar works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_02",
+      "name": "Witch Dawn",
+      "max_carrying_capacity": 500,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Dawn works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_03",
+      "name": "Witch Maple",
+      "max_carrying_capacity": 500,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Maple works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_04",
+      "name": "Witch Oak",
+      "max_carrying_capacity": 500,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Oak works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_01",
+      "name": "Witch Elm",
+      "max_carrying_capacity": 500,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-24:00",
+      "description": "Witch Elm works the Evening shift (16:00-24:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_02",
+      "name": "Witch Fern",
+      "max_carrying_capacity": 500,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-24:00",
+      "description": "Witch Fern works the Evening shift (16:00-24:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_03",
+      "name": "Witch Pine",
+      "max_carrying_capacity": 500,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-24:00",
+      "description": "Witch Pine works the Evening shift (16:00-24:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_04",
+      "name": "Witch Sage",
+      "max_carrying_capacity": 500,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-24:00",
+      "description": "Witch Sage works the Evening shift (16:00-24:00)"
+    }
+  ],
+  "network": {
+    "edges": [
+      {
+        "from": "cauldron_001",
+        "to": "market_001",
+        "travel_time_minutes": 45,
+        "distance_km": 0.3
+      },
+      {
+        "from": "cauldron_002",
+        "to": "market_001",
+        "travel_time_minutes": 40,
+        "distance_km": 0.25
+      },
+      {
+        "from": "cauldron_003",
+        "to": "market_001",
+        "travel_time_minutes": 55,
+        "distance_km": 0.38
+      },
+      {
+        "from": "cauldron_004",
+        "to": "market_001",
+        "travel_time_minutes": 32,
+        "distance_km": 0.18
+      },
+      {
+        "from": "cauldron_005",
+        "to": "market_001",
+        "travel_time_minutes": 62,
+        "distance_km": 0.45
+      },
+      {
+        "from": "cauldron_006",
+        "to": "market_001",
+        "travel_time_minutes": 28,
+        "distance_km": 0.15
+      },
+      {
+        "from": "cauldron_007",
+        "to": "market_001",
+        "travel_time_minutes": 70,
+        "distance_km": 0.52
+      },
+      {
+        "from": "cauldron_008",
+        "to": "market_001",
+        "travel_time_minutes": 22,
+        "distance_km": 0.12
+      },
+      {
+        "from": "cauldron_009",
+        "to": "market_001",
+        "travel_time_minutes": 80,
+        "distance_km": 0.6
+      },
+      {
+        "from": "cauldron_010",
+        "to": "market_001",
+        "travel_time_minutes": 20,
+        "distance_km": 0.1
+      },
+      {
+        "from": "cauldron_011",
+        "to": "market_001",
+        "travel_time_minutes": 90,
+        "distance_km": 0.68
+      },
+      {
+        "from": "cauldron_012",
+        "to": "market_001",
+        "travel_time_minutes": 15,
+        "distance_km": 0.08
+      },
+      {
+        "from": "cauldron_001",
+        "to": "cauldron_002",
+        "travel_time_minutes": 22,
+        "distance_km": 0.15
+      },
+      {
+        "from": "cauldron_002",
+        "to": "cauldron_004",
+        "travel_time_minutes": 25,
+        "distance_km": 0.18
+      },
+      {
+        "from": "cauldron_003",
+        "to": "cauldron_005",
+        "travel_time_minutes": 30,
+        "distance_km": 0.21
+      },
+      {
+        "from": "cauldron_004",
+        "to": "cauldron_006",
+        "travel_time_minutes": 18,
+        "distance_km": 0.12
+      },
+      {
+        "from": "cauldron_005",
+        "to": "cauldron_007",
+        "travel_time_minutes": 28,
+        "distance_km": 0.19
+      },
+      {
+        "from": "cauldron_006",
+        "to": "cauldron_008",
+        "travel_time_minutes": 15,
+        "distance_km": 0.1
+      },
+      {
+        "from": "cauldron_007",
+        "to": "cauldron_009",
+        "travel_time_minutes": 32,
+        "distance_km": 0.23
+      },
+      {
+        "from": "cauldron_008",
+        "to": "cauldron_010",
+        "travel_time_minutes": 12,
+        "distance_km": 0.08
+      },
+      {
+        "from": "cauldron_009",
+        "to": "cauldron_011",
+        "travel_time_minutes": 20,
+        "distance_km": 0.14
+      },
+      {
+        "from": "cauldron_010",
+        "to": "cauldron_012",
+        "travel_time_minutes": 10,
+        "distance_km": 0.06
+      }
+    ],
+    "description": "Network topology with travel paths between cauldrons and market"
+  }
+}

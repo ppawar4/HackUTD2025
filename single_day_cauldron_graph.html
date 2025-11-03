@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Single Day Cauldron Level Graph</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        label {
+            font-weight: bold;
+            font-size: 14px;
+        }
+        select, button {
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        #levelChart {
+            max-height: 600px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="title">Cauldron Level - Single Day View</h1>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label for="cauldronSelect">Cauldron:</label>
+                <select id="cauldronSelect"></select>
+            </div>
+            <div class="control-group">
+                <label for="dateSelect">Date:</label>
+                <select id="dateSelect"></select>
+            </div>
+            <div class="control-group" style="justify-content: flex-end;">
+                <button onclick="updateGraph()">Update Graph</button>
+            </div>
+        </div>
+        
+        <canvas id="levelChart"></canvas>
+    </div>
+
+    <script>
+        let cauldrons = [];
+        let historicalData = [];
+        let transportTickets = [];
+        let unreportedDrains = [];
+        
+        // Load data from JSON files
+        async function loadData() {
+            try {
+                // Load cauldrons
+                const cauldronsResponse = await fetch('cauldrons.json');
+                const cauldronsData = await cauldronsResponse.json();
+                cauldrons = cauldronsData.cauldrons;
+                
+                // Load historical data
+                const historicalResponse = await fetch('historical_data.json');
+                const historicalDataObj = await historicalResponse.json();
+                historicalData = historicalDataObj.data;
+                
+                // Load transport tickets
+                const ticketsResponse = await fetch('transport_tickets.json');
+                const ticketsData = await ticketsResponse.json();
+                transportTickets = ticketsData.transport_tickets;
+                
+                // Load unreported drains (if file exists)
+                try {
+                    const unreportedResponse = await fetch('unreported_drains.json');
+                    const unreportedData = await unreportedResponse.json();
+                    unreportedDrains = unreportedData.unreported_drains || [];
+                } catch (e) {
+                    // File might not exist yet, that's okay
+                    unreportedDrains = [];
+                }
+                
+                // Populate cauldron dropdown
+                const cauldronSelect = document.getElementById('cauldronSelect');
+                cauldrons.forEach(cauldron => {
+                    const option = document.createElement('option');
+                    option.value = cauldron.id;
+                    option.textContent = `${cauldron.id} - ${cauldron.name}`;
+                    cauldronSelect.appendChild(option);
+                });
+                
+                // Populate date dropdown (get unique dates from historical data)
+                const dateSelect = document.getElementById('dateSelect');
+                const dates = new Set();
+                historicalData.forEach(entry => {
+                    const date = new Date(entry.timestamp);
+                    const dateStr = date.toISOString().split('T')[0]; // YYYY-MM-DD
+                    dates.add(dateStr);
+                });
+                const sortedDates = Array.from(dates).sort();
+                sortedDates.forEach(dateStr => {
+                    const option = document.createElement('option');
+                    option.value = dateStr;
+                    const date = new Date(dateStr);
+                    option.textContent = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                    option.selected = dateStr === '2024-10-31'; // Default to Oct 31
+                    dateSelect.appendChild(option);
+                });
+                
+                // Load initial graph
+                updateGraph();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                alert('Error loading data. Make sure the JSON files are in the same directory.');
+            }
+        }
+        
+        function updateGraph() {
+            const cauldronId = document.getElementById('cauldronSelect').value;
+            const selectedDate = document.getElementById('dateSelect').value;
+            
+            const cauldron = cauldrons.find(c => c.id === cauldronId);
+            if (!cauldron) return;
+            
+            // Filter data for selected day and cauldron
+            const dayStart = new Date(selectedDate + 'T00:00:00Z');
+            const dayEnd = new Date(selectedDate + 'T23:59:59Z');
+            
+            const dayData = historicalData.filter(entry => {
+                const entryDate = new Date(entry.timestamp);
+                return entryDate >= dayStart && entryDate <= dayEnd;
+            });
+            
+            // Extract timestamps and levels
+            const timestamps = [];
+            const levels = [];
+            
+            dayData.forEach(entry => {
+                const date = new Date(entry.timestamp);
+                const timeStr = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+                timestamps.push(timeStr);
+                levels.push(entry.cauldron_levels[cauldronId] || 0);
+            });
+            
+            // Find collections for this cauldron on this day
+            const dayCollections = transportTickets.filter(ticket => {
+                if (ticket.cauldron_id !== cauldronId) return false;
+                const ticketDate = new Date(ticket.collection_start_timestamp);
+                const ticketDateStr = ticketDate.toISOString().split('T')[0];
+                return ticketDateStr === selectedDate;
+            });
+            
+            // Find unreported drains for this cauldron on this day
+            const dayUnreportedDrains = unreportedDrains.filter(drain => {
+                if (drain.cauldron_id !== cauldronId) return false;
+                const drainDate = new Date(drain.drain_start_timestamp);
+                const drainDateStr = drainDate.toISOString().split('T')[0];
+                return drainDateStr === selectedDate;
+            });
+            
+            // Convert collection timestamps to indices
+            const collections = dayCollections.map(ticket => {
+                const startTime = new Date(ticket.collection_start_timestamp);
+                const endTime = new Date(ticket.collection_timestamp);
+                const durationMs = endTime - startTime;
+                const durationMin = Math.round(durationMs / 60000 * 10) / 10;
+                
+                // Find the index in our timestamps array
+                let startIdx = -1;
+                for (let i = 0; i < dayData.length; i++) {
+                    const entryDate = new Date(dayData[i].timestamp);
+                    if (entryDate >= startTime && startIdx === -1) {
+                        startIdx = i;
+                        break;
+                    }
+                }
+                
+                let endIdx = -1;
+                for (let i = 0; i < dayData.length; i++) {
+                    const entryDate = new Date(dayData[i].timestamp);
+                    if (entryDate >= endTime) {
+                        endIdx = i;
+                        break;
+                    }
+                }
+                
+                // If exact match not found, find closest
+                if (startIdx === -1) {
+                    startIdx = dayData.findIndex(entry => {
+                        const entryDate = new Date(entry.timestamp);
+                        return Math.abs(entryDate - startTime) < 60000; // Within 1 minute
+                    });
+                }
+                if (endIdx === -1) {
+                    endIdx = dayData.findIndex(entry => {
+                        const entryDate = new Date(entry.timestamp);
+                        return Math.abs(entryDate - endTime) < 60000;
+                    });
+                }
+                
+                if (endIdx === -1) endIdx = dayData.length - 1;
+                if (startIdx === -1) startIdx = 0;
+                
+                return {
+                    ticket_id: ticket.ticket_id,
+                    start_idx: startIdx,
+                    end_idx: endIdx,
+                    amount: ticket.amount_collected,
+                    start_time: startTime.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+                    duration_min: durationMin,
+                    is_suspicious: ticket.is_suspicious || false,
+                    suspicious_type: ticket.suspicious_type || null
+                };
+            });
+            
+            // Update title
+            document.getElementById('title').textContent = `${cauldron.name} - ${new Date(selectedDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`;
+            
+            // Create annotations
+            const maxVol = cauldron.max_volume;
+            const annotations = {
+                annotations: {}
+            };
+            
+            collections.forEach((coll, idx) => {
+                if (coll.start_idx >= 0 && coll.start_idx < timestamps.length) {
+                    // Use red color for suspicious tickets, blue for normal
+                    const isSuspicious = coll.is_suspicious;
+                    const borderColor = isSuspicious ? 'rgba(255, 0, 0, 0.8)' : 'rgba(0, 123, 255, 0.8)';
+                    const bgColor = isSuspicious ? 'rgba(255, 0, 0, 0.9)' : 'rgba(0, 123, 255, 0.9)';
+                    const boxBgColor = isSuspicious ? 'rgba(255, 0, 0, 0.05)' : 'rgba(0, 123, 255, 0.05)';
+                    const boxBorderColor = isSuspicious ? 'rgba(255, 0, 0, 0.3)' : 'rgba(0, 123, 255, 0.3)';
+                    const endLineColor = isSuspicious ? 'rgba(255, 0, 0, 0.6)' : 'rgba(0, 123, 255, 0.6)';
+                    
+                    const warningText = isSuspicious ? ' ⚠️ SUSPICIOUS' : '';
+                    const suspiciousType = coll.suspicious_type || '';
+                    
+                    annotations.annotations[`line_start_${idx}`] = {
+                        type: 'line',
+                        xMin: coll.start_idx,
+                        xMax: coll.start_idx,
+                        borderColor: borderColor,
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        label: {
+                            display: true,
+                            content: `Collection #${idx + 1} (${coll.duration_min}m, ${coll.amount}L)${warningText}`,
+                            position: 'start',
+                            backgroundColor: bgColor,
+                            color: 'white',
+                            font: { size: 10 },
+                            padding: 4
+                        }
+                    };
+                    
+                    if (coll.end_idx < timestamps.length) {
+                        annotations.annotations[`line_end_${idx}`] = {
+                            type: 'line',
+                            xMin: coll.end_idx,
+                            xMax: coll.end_idx,
+                            borderColor: endLineColor,
+                            borderWidth: 1.5,
+                            borderDash: [3, 3]
+                        };
+                    }
+                }
+            });
+            
+            // Add annotations for unreported drains (no ticket, but level drops)
+            dayUnreportedDrains.forEach((drain, drainIdx) => {
+                const drainStart = new Date(drain.drain_start_timestamp);
+                const drainEnd = new Date(drain.drain_end_timestamp);
+                
+                // Find indices for unreported drain period
+                let drainStartIdx = -1;
+                let drainEndIdx = -1;
+                
+                for (let i = 0; i < dayData.length; i++) {
+                    const entryDate = new Date(dayData[i].timestamp);
+                    if (entryDate >= drainStart && drainStartIdx === -1) {
+                        drainStartIdx = i;
+                    }
+                    if (entryDate >= drainEnd) {
+                        drainEndIdx = i;
+                        break;
+                    }
+                }
+                
+                if (drainStartIdx === -1) {
+                    drainStartIdx = dayData.findIndex(entry => {
+                        const entryDate = new Date(entry.timestamp);
+                        return Math.abs(entryDate - drainStart) < 60000;
+                    });
+                }
+                if (drainEndIdx === -1) {
+                    drainEndIdx = dayData.findIndex(entry => {
+                        const entryDate = new Date(entry.timestamp);
+                        return Math.abs(entryDate - drainEnd) < 60000;
+                    });
+                }
+                
+                if (drainStartIdx === -1) drainStartIdx = 0;
+                if (drainEndIdx === -1) drainEndIdx = dayData.length - 1;
+                
+                if (drainStartIdx >= 0 && drainStartIdx < timestamps.length) {
+                    const annIdx = collections.length + drainIdx; // Offset by regular collections
+                    const drainColor = 'rgba(255, 165, 0, 0.8)'; // Orange for unreported drains
+                    const drainBgColor = 'rgba(255, 165, 0, 0.9)';
+                    const drainBoxColor = 'rgba(255, 165, 0, 0.05)';
+                    const drainBorderColor = 'rgba(255, 165, 0, 0.5)';
+                    
+                    annotations.annotations[`unreported_line_start_${annIdx}`] = {
+                        type: 'line',
+                        xMin: drainStartIdx,
+                        xMax: drainStartIdx,
+                        borderColor: drainColor,
+                        borderWidth: 3,
+                        borderDash: [10, 5],
+                        label: {
+                            display: true,
+                            content: `⚠️ NO TICKET - ~${drain.estimated_amount_drained_liters}L drained`,
+                            position: 'start',
+                            backgroundColor: drainBgColor,
+                            color: 'white',
+                            font: { size: 11, weight: 'bold' },
+                            padding: 5
+                        }
+                    };
+                    
+                    if (drainEndIdx < timestamps.length) {
+                        annotations.annotations[`unreported_line_end_${annIdx}`] = {
+                            type: 'line',
+                            xMin: drainEndIdx,
+                            xMax: drainEndIdx,
+                            borderColor: drainColor,
+                            borderWidth: 2,
+                            borderDash: [10, 5]
+                        };
+                    }
+                }
+            });
+            
+            // Create or update chart
+            const ctx = document.getElementById('levelChart').getContext('2d');
+            
+            // Destroy existing chart if it exists
+            if (window.currentChart) {
+                window.currentChart.destroy();
+            }
+            
+            window.currentChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: timestamps,
+                    datasets: [{
+                        label: 'Level (L)',
+                        data: levels,
+                        borderColor: 'rgb(139, 69, 19)',
+                        backgroundColor: 'rgba(139, 69, 19, 0.1)',
+                        borderWidth: 2.5,
+                        tension: 0.1,
+                        pointRadius: 0,
+                        fill: true
+                    }, {
+                        label: 'Max Capacity',
+                        data: Array(timestamps.length).fill(maxVol),
+                        borderColor: 'rgb(255, 0, 0)',
+                        borderDash: [5, 5],
+                        borderWidth: 1.5,
+                        pointRadius: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: true, position: 'top' },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) { label += ': '; }
+                                    label += context.parsed.y.toFixed(1) + 'L';
+                                    return label;
+                                }
+                            }
+                        },
+                        annotation: annotations
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: maxVol * 1.1,
+                            title: { display: true, text: 'Potion Level (L)' },
+                            ticks: { font: { size: 10 } }
+                        },
+                        x: {
+                            title: { display: true, text: 'Time' },
+                            ticks: { 
+                                font: { size: 9 }, 
+                                maxRotation: 45, 
+                                minRotation: 45,
+                                maxTicksLimit: 24
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Load data when page loads
+        loadData();
+    </script>
+</body>
+</html>
+
