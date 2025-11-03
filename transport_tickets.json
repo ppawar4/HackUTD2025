@@ -1,7 +1,7 @@
 {
   "metadata": {
     "total_tickets": 192,
-    "suspicious_tickets": 24,
+    "suspicious_tickets": 9,
     "date_range": {
       "start": "2024-10-30T02:04:00Z",
       "end": "2024-11-22T19:44:00Z"
@@ -166,12 +166,15 @@
       "ticket_id": "TT_20241031_007",
       "cauldron_id": "cauldron_009",
       "collection_start_timestamp": "2024-10-31T19:39:00Z",
-      "collection_timestamp": "2024-10-31T20:44:00Z",
-      "amount_collected": 54.12,
+      "collection_timestamp": "2024-10-31T22:06:00Z",
+      "amount_collected": 95.12,
       "courier_id": "courier_witch_03_02",
       "status": "completed",
-      "notes": "Added to reduce gap between collections",
-      "_visible_drop": 47.94013938896369
+      "notes": "Added to reduce gap between collections Underreported - actual combined drain was 125.76L (original: 54.12L + unreported: 71.64L) but only 95.12L reported.",
+      "_visible_drop": 65.97,
+      "is_suspicious": true,
+      "suspicious_type": "underreported",
+      "_actual_drain_amount": 125.76
     },
     {
       "ticket_id": "TT_20241101_025",
@@ -251,7 +254,7 @@
       "_visible_drop": 72.71846199446782
     },
     {
-      "ticket_id": "TT_20241101_026",
+      "ticket_id": "TT_20241101_030",
       "cauldron_id": "cauldron_003",
       "collection_start_timestamp": "2024-11-01T08:10:00Z",
       "collection_timestamp": "2024-11-01T09:34:00Z",
@@ -339,7 +342,7 @@
       "_visible_drop": 53.17556803069845
     },
     {
-      "ticket_id": "TT_20241101_025",
+      "ticket_id": "TT_20241101_028",
       "cauldron_id": "cauldron_007",
       "collection_start_timestamp": "2024-11-01T20:09:00Z",
       "collection_timestamp": "2024-11-01T21:24:00Z",
@@ -383,7 +386,7 @@
       "_visible_drop": 38.0267726680363
     },
     {
-      "ticket_id": "TT_20241101_029",
+      "ticket_id": "TT_20241102_030",
       "cauldron_id": "cauldron_005",
       "collection_start_timestamp": "2024-11-02T00:57:00Z",
       "collection_timestamp": "2024-11-02T02:21:00Z",
@@ -495,13 +498,16 @@
     {
       "ticket_id": "TT_20241102_032",
       "cauldron_id": "cauldron_001",
-      "collection_start_timestamp": "2024-11-02T16:07:00Z",
+      "collection_start_timestamp": "2024-11-02T14:54:00Z",
       "collection_timestamp": "2024-11-02T17:07:00Z",
-      "amount_collected": 44.39,
+      "amount_collected": 75.81,
       "courier_id": "courier_witch_03_01",
       "status": "completed",
-      "notes": "Added to reduce gap between collections",
-      "_visible_drop": 38.994030303910314
+      "notes": "Added to reduce gap between collections Underreported - actual combined drain was 126.19L (original: 44.39L + unreported: 81.8L) but only 75.81L reported.",
+      "_visible_drop": 51.06,
+      "is_suspicious": true,
+      "suspicious_type": "underreported",
+      "_actual_drain_amount": 126.19
     },
     {
       "ticket_id": "TT_20241102_007",
@@ -966,7 +972,7 @@
       "_visible_drop": 77.19204126005778
     },
     {
-      "ticket_id": "TT_20241102_018",
+      "ticket_id": "TT_20241105_019",
       "cauldron_id": "cauldron_006",
       "collection_start_timestamp": "2024-11-05T07:16:00Z",
       "collection_timestamp": "2024-11-05T08:30:00Z",
@@ -1068,23 +1074,29 @@
       "ticket_id": "TT_20241105_027",
       "cauldron_id": "cauldron_008",
       "collection_start_timestamp": "2024-11-05T22:05:00Z",
-      "collection_timestamp": "2024-11-05T23:07:00Z",
-      "amount_collected": 19.83,
+      "collection_timestamp": "2024-11-06T01:11:00Z",
+      "amount_collected": 28.6,
       "courier_id": "courier_witch_03_03",
       "status": "completed",
-      "notes": "Added to reduce gap between collections",
-      "_visible_drop": 17.161514403847924
+      "notes": "Added to reduce gap between collections Underreported - actual combined drain was 44.68L (original: 19.83L + unreported: 24.85L) but only 28.6L reported.",
+      "_visible_drop": 20.92,
+      "is_suspicious": true,
+      "suspicious_type": "underreported",
+      "_actual_drain_amount": 44.68
     },
     {
       "ticket_id": "TT_20241106_005",
       "cauldron_id": "cauldron_009",
       "collection_start_timestamp": "2024-11-06T00:31:00Z",
-      "collection_timestamp": "2024-11-06T01:35:00Z",
-      "amount_collected": 42.81,
+      "collection_timestamp": "2024-11-06T03:22:00Z",
+      "amount_collected": 82.36,
       "courier_id": "courier_witch_01_01",
       "status": "completed",
-      "notes": "Added to reduce gap between collections",
-      "_visible_drop": 36.72743968477363
+      "notes": "Added to reduce gap between collections Underreported - actual combined drain was 104.78L (original: 42.81L + unreported: 61.97L) but only 82.36L reported.",
+      "_visible_drop": 58.01,
+      "is_suspicious": true,
+      "suspicious_type": "underreported",
+      "_actual_drain_amount": 104.78
     },
     {
       "ticket_id": "TT_20241106_001",
@@ -1122,13 +1134,16 @@
     {
       "ticket_id": "TT_20241106_035",
       "cauldron_id": "cauldron_001",
-      "collection_start_timestamp": "2024-11-06T05:54:00Z",
+      "collection_start_timestamp": "2024-11-06T05:05:00Z",
       "collection_timestamp": "2024-11-06T07:17:00Z",
-      "amount_collected": 74.36,
+      "amount_collected": 96.89,
       "courier_id": "courier_witch_01_03",
       "status": "completed",
-      "notes": "Added to reduce gap between collections",
-      "_visible_drop": 66.8868547408894
+      "notes": "Added to reduce gap between collections Underreported - actual combined drain was 123.79L (original: 74.36L + unreported: 49.43L) but only 96.89L reported.",
+      "_visible_drop": 75.81,
+      "is_suspicious": true,
+      "suspicious_type": "underreported",
+      "_actual_drain_amount": 123.79
     },
     {
       "ticket_id": "TT_20241103_015",
@@ -1144,13 +1159,16 @@
     {
       "ticket_id": "TT_20241106_024",
       "cauldron_id": "cauldron_007",
-      "collection_start_timestamp": "2024-11-06T09:43:00Z",
+      "collection_start_timestamp": "2024-11-06T08:26:00Z",
       "collection_timestamp": "2024-11-06T10:50:00Z",
-      "amount_collected": 59.45,
+      "amount_collected": 114.31,
       "courier_id": "courier_witch_02_04",
       "status": "completed",
-      "notes": "Added to reduce gap between collections",
-      "_visible_drop": 49.73053617625725
+      "notes": "Added to reduce gap between collections Underreported - actual combined drain was 148.01L (original: 59.45L + unreported: 88.56L) but only 114.31L reported.",
+      "_visible_drop": 80.15,
+      "is_suspicious": true,
+      "suspicious_type": "underreported",
+      "_actual_drain_amount": 148.01
     },
     {
       "ticket_id": "TT_20241106_027",
@@ -1175,6 +1193,20 @@
       "_visible_drop": 79.564814029761
     },
     {
+      "ticket_id": "TT_20241106_003",
+      "cauldron_id": "cauldron_011",
+      "collection_start_timestamp": "2024-11-06T12:06:00Z",
+      "collection_timestamp": "2024-11-06T14:12:00Z",
+      "amount_collected": 65.35,
+      "courier_id": "courier_witch_02_03",
+      "status": "completed",
+      "notes": "Added to reduce gap between collections Underreported - actual combined drain was 82.44L (original: 40.69L + unreported: 41.75L) but only 65.35L reported.",
+      "_visible_drop": 45.47,
+      "is_suspicious": true,
+      "suspicious_type": "underreported",
+      "_actual_drain_amount": 82.44
+    },
+    {
       "ticket_id": "TT_20241106_007",
       "cauldron_id": "cauldron_009",
       "collection_start_timestamp": "2024-11-06T12:31:00Z",
@@ -1184,17 +1216,6 @@
       "status": "completed",
       "notes": "Added to reduce gap between collections",
       "_visible_drop": 21.44469862705915
-    },
-    {
-      "ticket_id": "TT_20241106_003",
-      "cauldron_id": "cauldron_011",
-      "collection_start_timestamp": "2024-11-06T13:06:00Z",
-      "collection_timestamp": "2024-11-06T14:12:00Z",
-      "amount_collected": 40.69,
-      "courier_id": "courier_witch_02_03",
-      "status": "completed",
-      "notes": "Added to reduce gap between collections",
-      "_visible_drop": 33.425891298571514
     },
     {
       "ticket_id": "TT_20241106_010",
@@ -1596,7 +1617,7 @@
       "_visible_drop": 29.03076352400646
     },
     {
-      "ticket_id": "TT_20241106_018",
+      "ticket_id": "TT_20241108_023",
       "cauldron_id": "cauldron_010",
       "collection_start_timestamp": "2024-11-08T20:34:00Z",
       "collection_timestamp": "2024-11-08T21:49:00Z",
