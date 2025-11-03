@@ -1284,17 +1284,6 @@
       "_visible_drop": 20.525916050454782
     },
     {
-      "ticket_id": "TT_20241107_150",
-      "cauldron_id": "cauldron_009",
-      "collection_start_timestamp": "2024-11-07T00:33:00Z",
-      "collection_timestamp": "2024-11-07T01:44:00Z",
-      "amount_collected": 84.56,
-      "courier_id": "courier_witch_01_01",
-      "status": "completed",
-      "notes": "Sequential collection",
-      "_visible_drop": 77.81640313569045
-    },
-    {
       "ticket_id": "TT_20241107_158",
       "cauldron_id": "cauldron_011",
       "collection_start_timestamp": "2024-11-07T00:51:00Z",
@@ -1461,17 +1450,6 @@
       "status": "completed",
       "notes": "Sequential collection",
       "_visible_drop": 43.89045049789773
-    },
-    {
-      "ticket_id": "TT_20241108_012",
-      "cauldron_id": "cauldron_004",
-      "collection_start_timestamp": "2024-11-08T01:40:00Z",
-      "collection_timestamp": "2024-11-08T02:56:00Z",
-      "amount_collected": 69.25,
-      "courier_id": "courier_witch_01_04",
-      "status": "completed",
-      "notes": "Added to reduce gap between collections",
-      "_visible_drop": 63.55349585571292
     },
     {
       "ticket_id": "TT_20241108_005",

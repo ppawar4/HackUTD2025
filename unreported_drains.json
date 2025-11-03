@@ -95,6 +95,22 @@
       "duration_minutes": 81,
       "converted_from_ticket": "TT_20241030_015",
       "_visible_drop": 41.223594698947096
+    },
+    {
+      "cauldron_id": "cauldron_009",
+      "drain_start_timestamp": "2024-11-07T00:33:00Z",
+      "drain_end_timestamp": "2024-11-07T01:44:00Z",
+      "estimated_amount_drained_liters": 84.56,
+      "duration_minutes": 71,
+      "_visible_drop": 67.6
+    },
+    {
+      "cauldron_id": "cauldron_004",
+      "drain_start_timestamp": "2024-11-08T01:40:00Z",
+      "drain_end_timestamp": "2024-11-08T02:56:00Z",
+      "estimated_amount_drained_liters": 69.25,
+      "duration_minutes": 76,
+      "_visible_drop": 55.4
     }
   ],
   "metadata": {

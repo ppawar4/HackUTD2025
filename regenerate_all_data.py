@@ -45,7 +45,7 @@ fill_rates = {
     'cauldron_004': 0.075,  # Reduced from 0.127 (was hitting capacity too often)
     'cauldron_005': 0.019,  # Keep same (low rate)
     'cauldron_006': 0.013,  # Keep same (lowest rate)
-    'cauldron_007': 0.145,  # Reduced from 0.241 (was hitting capacity too often - highest producer)
+    'cauldron_007': 0.065,  # Further reduced to prevent hitting capacity for too long
     'cauldron_008': 0.043,  # Keep same (moderate rate)
     'cauldron_009': 0.095,  # Reduced from 0.161 (was hitting capacity too often)
     'cauldron_010': 0.023,  # Keep same (low rate)
