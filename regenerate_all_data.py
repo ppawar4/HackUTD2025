@@ -65,16 +65,26 @@ collection_thresholds = {
 
 # Constants
 UNLOAD_TIME = 15
-MAX_CAPACITY_PER_WITCH = 70  # Reduced to 70L per witch
+MAX_CAPACITY_PER_WITCH = 100  # Updated to accommodate gross drain (net drain + fill during collection)
+# Maximum gross drain can be ~98L (cauldron_009 with high fill rate), so 100L provides buffer
 MIN_BUFFER_BETWEEN_TRIPS = 30  # Minimum minutes between trips (from unload complete to next departure)
-# NOTE: We now use CONSTANT NET drain rate instead of constant gross drain rate
-# This ensures consistent drain rates across all cauldrons regardless of fill rate
-CONSTANT_NET_DRAIN_RATE_L_PER_HOUR = 24.0  # Constant NET drain rate: 24 L/hour
-CONSTANT_NET_DRAIN_RATE_L_PER_MIN = CONSTANT_NET_DRAIN_RATE_L_PER_HOUR / 60.0  # 0.4 L/min
 
-# Legacy constant for backward compatibility (not used in new logic)
-CONSTANT_DRAIN_RATE_L_PER_HOUR = 50.0  # Not used - kept for reference
-CONSTANT_DRAIN_RATE_L_PER_MIN = CONSTANT_DRAIN_RATE_L_PER_HOUR / 60.0  # Not used
+# Base drain rates per cauldron (L/min) - each cauldron can have a different drain rate
+# The true drain rate (gross) = base_drain_rate + fill_rate (accounts for potion being generated during drain)
+drain_rates = {
+    'cauldron_001': 0.35,   # Base drain rate: 0.35 L/min, true = 0.35 + 0.08 = 0.43 L/min
+    'cauldron_002': 0.32,   # Base drain rate: 0.32 L/min, true = 0.32 + 0.065 = 0.385 L/min
+    'cauldron_003': 0.38,   # Base drain rate: 0.38 L/min, true = 0.38 + 0.09 = 0.47 L/min
+    'cauldron_004': 0.33,   # Base drain rate: 0.33 L/min, true = 0.33 + 0.07 = 0.40 L/min
+    'cauldron_005': 0.36,   # Base drain rate: 0.36 L/min, true = 0.36 + 0.075 = 0.435 L/min
+    'cauldron_006': 0.30,   # Base drain rate: 0.30 L/min, true = 0.30 + 0.055 = 0.355 L/min
+    'cauldron_007': 0.39,   # Base drain rate: 0.39 L/min, true = 0.39 + 0.095 = 0.485 L/min
+    'cauldron_008': 0.34,   # Base drain rate: 0.34 L/min, true = 0.34 + 0.08 = 0.42 L/min
+    'cauldron_009': 0.45,   # Base drain rate: 0.45 L/min, true = 0.45 + 0.18 = 0.63 L/min
+    'cauldron_010': 0.35,   # Base drain rate: 0.35 L/min, true = 0.35 + 0.075 = 0.425 L/min
+    'cauldron_011': 0.37,   # Base drain rate: 0.37 L/min, true = 0.37 + 0.09 = 0.46 L/min
+    'cauldron_012': 0.31,   # Base drain rate: 0.31 L/min, true = 0.31 + 0.065 = 0.375 L/min
+}
 
 # Witches by shift
 witches_by_shift = defaultdict(list)
@@ -112,6 +122,30 @@ def is_witch_available(witch_id, start_time, end_time, witch_schedules, cauldron
             # Check if there's any overlap (including buffers)
             if not (buffer_end <= event_start or buffer_start >= event_end):
                 return False
+    return True
+
+def is_cauldron_available(cauldron_id, collection_start, collection_end, transport_tickets, min_gap_minutes=30):
+    """Check if cauldron has no tickets scheduled within min_gap_minutes of the proposed collection time"""
+    # Check all existing tickets for this cauldron
+    for ticket in transport_tickets:
+        if ticket['cauldron_id'] == cauldron_id:
+            existing_start = datetime.fromisoformat(ticket['collection_start_timestamp'].replace('Z', '+00:00'))
+            existing_end = datetime.fromisoformat(ticket['collection_timestamp'].replace('Z', '+00:00'))
+            
+            # Check if proposed collection overlaps with existing collection
+            if not (collection_end <= existing_start or collection_start >= existing_end):
+                return False  # Overlapping
+            
+            # Check if gap between collections is less than minimum required
+            if existing_end < collection_start:
+                gap = (collection_start - existing_end).total_seconds() / 60
+                if gap < min_gap_minutes:
+                    return False  # Gap too small
+            elif collection_end < existing_start:
+                gap = (existing_start - collection_end).total_seconds() / 60
+                if gap < min_gap_minutes:
+                    return False  # Gap too small
+    
     return True
 
 # Initialize
@@ -253,8 +287,9 @@ while current_time <= end_date:
                 current_cauldron_level = minute_levels[drain['cauldron_id']]
                 
                 # CRITICAL: Always reduce level by net drain per minute
-                # net_drain_per_min = (drain_rate - fill_rate) per minute
-                # So subtracting it accounts for both draining AND filling during this minute
+                # net_drain_per_min = base_drain_rate (gross_drain_rate - fill_rate)
+                # gross_drain_rate = base_drain_rate + fill_rate (true drain rate)
+                # So subtracting net_drain_per_min accounts for both draining AND filling during this minute
                 new_level = current_cauldron_level - net_drain_per_min
                 
                 # Ensure level doesn't go negative
@@ -430,6 +465,16 @@ while current_time <= end_date:
                         # Need buffer time after unload before next departure
                         earliest_departure = max(current_time, last_unload + timedelta(minutes=MIN_BUFFER_BETWEEN_TRIPS))
                 
+                # Also check if cauldron has recent collections - need 30 min gap between collections on same cauldron
+                for ticket in transport_tickets:
+                    if ticket['cauldron_id'] == cauldron_id:
+                        existing_end = datetime.fromisoformat(ticket['collection_timestamp'].replace('Z', '+00:00'))
+                        # Need at least 30 minutes after previous collection ends before starting new one
+                        min_collection_start = existing_end + timedelta(minutes=30)
+                        # Convert to departure time (subtract travel time)
+                        min_departure = min_collection_start - timedelta(minutes=travel_to)
+                        earliest_departure = max(earliest_departure, min_departure)
+                
                 departure = earliest_departure
                 collection_start = departure + timedelta(minutes=travel_to)
                 
@@ -463,46 +508,46 @@ while current_time <= end_date:
                     actual_drain = fill_during_estimated + random.uniform(15, 40)  # Reduced from 30-80 to 15-40
                     amount_to_collect = actual_drain
                 
-                # Cap at available level AND witch capacity
-                actual_drain = min(actual_drain, level_at_collection, MAX_CAPACITY_PER_WITCH)
-                actual_drain = max(15, actual_drain)  # Increased minimum from 10 to 15
+                # Initial cap at available level (gross drain capacity check happens after duration calculation)
+                actual_drain = min(actual_drain, level_at_collection)
+                actual_drain = max(15, actual_drain)  # Minimum net drain
                 
-                # CRITICAL: actual_drain is now FIXED - this is the NET amount that will be drained
+                # CRITICAL: actual_drain is the NET amount that will be drained
+                # We need to ensure gross_drain (actual_drain + fill_during_collection) <= MAX_CAPACITY_PER_WITCH
                 # Duration will be calculated based on this amount, accounting for filling during collection
-                
-                # Calculate duration based on drain amount: higher volume = longer duration
-                # We need to account for filling during collection:
-                #   actual_drain = gross_drain - fill_during_collection
-                #   gross_drain = collection_rate * duration
-                #   fill_during_collection = fill_rate * duration
-                #   So: actual_drain = (collection_rate - fill_rate) * duration
-                #   Solving: duration = actual_drain / (collection_rate - fill_rate)
-                # But we also want a base duration for setup/preparation
                 
                 fill_rate = fill_rates[cauldron_id]
                 # Fill rate is constant for each cauldron throughout the entire period
                 
-                # Use CONSTANT NET drain rate across all cauldrons
-                # This ensures levels decrease at the same rate regardless of fill rate
-                # We want a constant NET drain rate, so gross drain rate adjusts to fill rate
-                CONSTANT_NET_DRAIN_RATE_L_PER_MIN = 0.400  # Constant net drain: 24 L/hour
+                # Get base drain rate for this cauldron
+                base_drain_rate = drain_rates[cauldron_id]
                 
-                # Calculate gross drain rate needed to achieve constant net drain
-                # net_drain = gross_drain - fill_during_collection
-                # If we want constant net_drain_rate, then:
-                #   gross_drain_rate = net_drain_rate + fill_rate
-                gross_drain_rate = CONSTANT_NET_DRAIN_RATE_L_PER_MIN + fill_rate
+                # Calculate gross drain rate: true drain rate = base_drain_rate + fill_rate
+                # This accounts for potion being generated during the drain
+                gross_drain_rate = base_drain_rate + fill_rate
+                
+                # Net drain rate = gross_drain_rate - fill_rate = base_drain_rate
+                # This is the actual net amount drained per minute
+                net_drain_rate = base_drain_rate
+                
+                # Calculate maximum net_drain that ensures gross_drain <= MAX_CAPACITY_PER_WITCH
+                # gross_drain = net_drain + fill_rate * (net_drain / net_drain_rate)
+                # gross_drain = net_drain * (1 + fill_rate / net_drain_rate)
+                # So: max_net_drain = MAX_CAPACITY_PER_WITCH / (1 + fill_rate / net_drain_rate)
+                if net_drain_rate > 0:
+                    max_net_drain_for_capacity = MAX_CAPACITY_PER_WITCH / (1 + fill_rate / net_drain_rate)
+                    # Cap actual_drain to ensure gross_drain doesn't exceed capacity
+                    actual_drain = min(actual_drain, max_net_drain_for_capacity)
                 
                 # Duration calculation:
                 #   actual_drain = gross_drain - fill_during_collection
                 #   gross_drain = gross_drain_rate * duration
                 #   fill_during_collection = fill_rate * duration
-                #   So: actual_drain = (gross_drain_rate - fill_rate) * duration = net_drain_rate * duration
-                #   Solving: duration = actual_drain / net_drain_rate
+                #   So: actual_drain = (gross_drain_rate - fill_rate) * duration = base_drain_rate * duration
+                #   Solving: duration = actual_drain / base_drain_rate
                 
-                net_drain_rate = CONSTANT_NET_DRAIN_RATE_L_PER_MIN  # Now constant!
                 if net_drain_rate > 0:
-                    # Duration from actual drain amount (using constant net drain rate)
+                    # Duration from actual drain amount (using per-cauldron base drain rate)
                     collection_duration = int(actual_drain / net_drain_rate)
                 else:
                     # Fallback if net drain rate is somehow zero or negative
@@ -514,9 +559,27 @@ while current_time <= end_date:
                 # Recalculate fill during collection with actual duration
                 fill_during_collection = fill_rate * collection_duration
                 
-                # Verify: With constant net drain rate:
-                #   actual_drain = net_drain_rate * duration = CONSTANT_NET_DRAIN_RATE * duration
-                #   gross_drain = actual_drain + fill_during_collection
+                # Calculate gross drain: level change + fill during collection
+                # This is the total volume actually collected from the cauldron
+                gross_drain = actual_drain + fill_during_collection
+                
+                # Final safety check: ensure gross_drain doesn't exceed capacity
+                # (Shouldn't happen with above logic, but provides safety margin)
+                if gross_drain > MAX_CAPACITY_PER_WITCH:
+                    # Adjust net_drain to keep gross_drain within capacity
+                    # gross_drain = net_drain * (1 + fill_rate / net_drain_rate)
+                    if net_drain_rate > 0:
+                        max_net_for_gross = MAX_CAPACITY_PER_WITCH / (1 + fill_rate / net_drain_rate)
+                        actual_drain = max_net_for_gross
+                        collection_duration = int(actual_drain / net_drain_rate) if net_drain_rate > 0 else int(actual_drain / 0.1)
+                        collection_duration = max(15, min(180, collection_duration))
+                        fill_during_collection = fill_rate * collection_duration
+                        gross_drain = actual_drain + fill_during_collection
+                
+                # Verify: With per-cauldron drain rate:
+                #   actual_drain = net_drain_rate * duration = base_drain_rate * duration (level change)
+                #   fill_during_collection = fill_rate * duration (potion generated during drain)
+                #   gross_drain = actual_drain + fill_during_collection (total volume collected)
                 # This ensures the levels will drop by exactly actual_drain over the duration
                 
                 # Recalculate with actual duration
@@ -524,8 +587,12 @@ while current_time <= end_date:
                 arrival_back = collection_end + timedelta(minutes=travel_back)
                 unload_complete = arrival_back + timedelta(minutes=UNLOAD_TIME)
                 
+                # CRITICAL: Check both witch availability AND cauldron availability (30 min gap)
                 period_progress_availability = (current_time - start_date).total_seconds() / (end_date - start_date).total_seconds()
-                if is_witch_available(w, departure, unload_complete, witch_schedules, cauldron_id, period_progress_availability):
+                witch_available = is_witch_available(w, departure, unload_complete, witch_schedules, cauldron_id, period_progress_availability)
+                cauldron_available = is_cauldron_available(cauldron_id, collection_start, collection_end, transport_tickets, min_gap_minutes=30)
+                
+                if witch_available and cauldron_available:
                     witch_id = w
                     
                     # Schedule event
@@ -535,31 +602,32 @@ while current_time <= end_date:
                         'collection_end': collection_end,
                         'unload_complete': unload_complete,
                         'cauldron_id': cauldron_id,
-                        'actual_drain': actual_drain,
+                        'actual_drain': actual_drain,  # Net drain (for level calculations)
+                        'gross_drain': gross_drain,  # Total volume collected
                         'witch_id': witch_id
                     }
                     witch_schedules[witch_id].append(schedule_event)
                     
-                    # Add drain to pending
+                    # Add drain to pending (use net_drain for level calculations)
                     pending_drains.append({
                         'cauldron_id': cauldron_id,
                         'start': collection_start,
                         'end': collection_end,
                         'duration': collection_duration,
-                        'net_drain': actual_drain
+                        'net_drain': actual_drain  # Net drain for level changes
                     })
                     
                     # Determine if suspicious (12% chance)
                     is_suspicious = random.random() < 0.12
-                    reported_amount = actual_drain  # Based on fixed actual_drain amount
+                    # Reported amount should be based on gross_drain (total volume collected)
+                    reported_amount = gross_drain
                     
                     if is_suspicious:
                         underreport_factor = random.uniform(0.75, 0.92)
-                        reported_amount = actual_drain * underreport_factor
+                        reported_amount = gross_drain * underreport_factor
                     
                     # Create ticket
-                    # NOTE: Only collection_start_timestamp and collection_timestamp change with duration
-                    # amount_collected is based on actual_drain which remains fixed
+                    # amount_collected should be the gross drain (level change + fill during collection)
                     ticket_counter += 1
                     date_str = collection_start.strftime('%Y%m%d')
                     ticket_id = f"TT_{date_str}_{ticket_counter:03d}"
@@ -568,8 +636,8 @@ while current_time <= end_date:
                         'ticket_id': ticket_id,
                         'cauldron_id': cauldron_id,
                         'collection_start_timestamp': collection_start.strftime('%Y-%m-%dT%H:%M:%SZ'),
-                        'collection_timestamp': collection_end.strftime('%Y-%m-%dT%H:%M:%SZ'),  # Updated based on new duration
-                        'amount_collected': round(reported_amount, 2),  # Based on fixed actual_drain
+                        'collection_timestamp': collection_end.strftime('%Y-%m-%dT%H:%M:%SZ'),
+                        'amount_collected': round(reported_amount, 2),  # Gross drain (or underreported if suspicious)
                         'courier_id': witch_id,
                         'status': 'completed',
                         'notes': 'Sequential collection'
@@ -578,7 +646,7 @@ while current_time <= end_date:
                     if is_suspicious:
                         ticket['is_suspicious'] = True
                         ticket['suspicious_type'] = 'underreported'
-                        ticket['_actual_amount_collected'] = round(actual_drain, 2)
+                        ticket['_actual_amount_collected'] = round(gross_drain, 2)  # True gross amount collected
                     
                     transport_tickets.append(ticket)
                     collections_per_cauldron[cauldron_id] += 1
@@ -605,73 +673,82 @@ while current_time <= end_date:
     current_time += timedelta(minutes=1)
 
 # Add unreported drains (10-12 instances across the entire period)
-# Skip if we already loaded existing unreported drains
+# Always generate new unreported drains to ensure we have the right amount
 existing_unreported_count = len([d for d in unreported_drains if 'drain_start_timestamp' in d])
 if existing_unreported_count > 0:
-    print(f"\nSkipping unreported drain generation - using {existing_unreported_count} existing drains")
+    print(f"\nFound {existing_unreported_count} existing unreported drains, generating additional ones if needed...")
+    # Keep existing ones, but we'll still generate new ones if needed
     added_unreported_drains = [d for d in unreported_drains if 'drain_start_timestamp' in d]
-    # Keep the loaded drains in unreported_drains
-    unreported_drains = added_unreported_drains
 else:
-    print("\nAdding unreported drains...")
     added_unreported_drains = []
+
+# Generate unreported drains to reach target count (10-12 total)
+target_unreported_count = random.randint(10, 12)
+needed_unreported = target_unreported_count - len(added_unreported_drains)
+
+if needed_unreported > 0:
+    print(f"\nGenerating {needed_unreported} additional unreported drains (target: {target_unreported_count}, existing: {len(added_unreported_drains)})...")
     random.seed(54321)
 
-        # Get all ticket times to avoid overlaps
+    # Get all ticket times to avoid overlaps
     ticket_times = []
     for ticket in transport_tickets:
         start = datetime.fromisoformat(ticket['collection_start_timestamp'].replace('Z', '+00:00'))
         end = datetime.fromisoformat(ticket['collection_timestamp'].replace('Z', '+00:00'))
         ticket_times.append((start, end))
 
-    def overlaps_with_tickets(drain_start, drain_end):
-        """Check if drain overlaps with any ticket times"""
-        # Only check direct overlap, no buffer - unreported drains can happen near tickets
+    def overlaps_with_tickets(drain_start, drain_end, min_gap_minutes=30):
+        """Check if drain overlaps with any ticket times or is too close (< min_gap_minutes)"""
         for ticket_start, ticket_end in ticket_times:
+            # Check for direct overlap
             if not (drain_end <= ticket_start or drain_start >= ticket_end):
                 return True
+            # Check if gap is too small (less than min_gap_minutes)
+            if drain_end < ticket_start:
+                gap = (ticket_start - drain_end).total_seconds() / 60
+                if gap < min_gap_minutes:
+                    return True
+            elif ticket_end < drain_start:
+                gap = (drain_start - ticket_end).total_seconds() / 60
+                if gap < min_gap_minutes:
+                    return True
+        return False
+
+    def overlaps_with_unreported_drains(drain_start, drain_end, cauldron_id, added_drains, min_gap_minutes=30):
+        """Check if drain overlaps or is too close to existing unreported drains on same cauldron"""
+        for existing_drain in added_drains:
+            if existing_drain['cauldron_id'] == cauldron_id:
+                existing_start = datetime.fromisoformat(existing_drain['drain_start_timestamp'].replace('Z', '+00:00'))
+                existing_end = datetime.fromisoformat(existing_drain['drain_end_timestamp'].replace('Z', '+00:00'))
+                # Check for direct overlap
+                if not (drain_end <= existing_start or drain_start >= existing_end):
+                    return True
+                # Check if gap is too small
+                if drain_end < existing_start:
+                    gap = (existing_start - drain_end).total_seconds() / 60
+                    if gap < min_gap_minutes:
+                        return True
+                elif existing_end < drain_start:
+                    gap = (drain_start - existing_end).total_seconds() / 60
+                    if gap < min_gap_minutes:
+                        return True
         return False
 
     # Generate unreported drains at random times throughout the period
-    num_unreported = random.randint(10, 12)
+    # Allow them to be placed near tickets (within 30 min) but not overlapping
     attempts = 0
-    max_attempts = 1000  # Increased significantly
+    max_attempts = 2000  # Increased to allow more attempts with tighter constraints
 
-    # Track all unreported drains to ensure spacing
-    added_unreported_drains = []
-
-    # Find time gaps where no tickets are happening
-    # Sample times throughout the period and check for gaps
-    gap_times = []
-    for _ in range(100):  # Sample 100 random times
-        sample_time = start_date + timedelta(minutes=random.randint(200, total_minutes - 200))
-        # Check if this time is in a gap (not overlapping with any ticket)
-        is_gap = True
-        for ticket_start, ticket_end in ticket_times:
-            if ticket_start <= sample_time <= ticket_end:
-                is_gap = False
-                break
-        if is_gap:
-            gap_times.append(sample_time)
-
-    # If we found gaps, use them; otherwise fall back to random
-    use_gaps = len(gap_times) > 0
-
-    while len(added_unreported_drains) < num_unreported:
+    while len(added_unreported_drains) < target_unreported_count:
         attempts += 1
         if attempts > max_attempts:
-            print(f"⚠️  Warning: Could not generate all {num_unreported} unreported drains after {max_attempts} attempts. Generated {len(added_unreported_drains)} drains.")
+            print(f"⚠️  Warning: Could not generate all {target_unreported_count} unreported drains after {max_attempts} attempts. Generated {len(added_unreported_drains)} drains.")
             break
     
-        # Use gap times if available, otherwise random
-        if use_gaps and len(gap_times) > 0:
-            drain_start = random.choice(gap_times)
-            gap_times.remove(drain_start)  # Remove so we don't use it again
-        else:
-            # Random time within the period
-            drain_start = start_date + timedelta(
-                minutes=random.randint(200, total_minutes - 200)
-            )
+        # Random time within the period (allow anywhere, not just gaps)
+        drain_start = start_date + timedelta(
+            minutes=random.randint(200, total_minutes - 200)
+        )
     
         # Find level at this time - find closest entry to drain_start
         level_at_time = None
@@ -691,97 +768,86 @@ else:
             if candidates:
                 cauldron_id, level = random.choice(candidates)
             
-                # Check spacing from existing unreported drains for THIS cauldron
-                # Need at least 2 hours between drains for same cauldron to allow visible level increase
-                # TEMPORARILY DISABLED for debugging - only check if we have some drains already
-                too_close_same_cauldron = False
-                if len(added_unreported_drains) > 0:  # Only check spacing if we have existing drains
-                    for existing_drain in added_unreported_drains:
-                        if existing_drain['cauldron_id'] == cauldron_id:
-                            existing_start = datetime.fromisoformat(existing_drain['drain_start_timestamp'].replace('Z', '+00:00'))
-                            existing_end = datetime.fromisoformat(existing_drain['drain_end_timestamp'].replace('Z', '+00:00'))
-                        
-                            # Need at least 2 hours between drains for same cauldron to allow visible level increase
-                            time_diff_start = abs((drain_start - existing_start).total_seconds() / 3600)  # hours
-                            time_diff_end = abs((drain_start - existing_end).total_seconds() / 3600)  # hours
-                        
-                            if time_diff_start < 2.0 or time_diff_end < 2.0:
-                                too_close_same_cauldron = True
-                                break
-            
-                if too_close_same_cauldron:
-                    continue  # Skip this attempt and try again
-            
-                # Also check spacing from other cauldrons (at least 1 hour)
-                # TEMPORARILY DISABLED for debugging - only check if we have some drains already
-                too_close_other = False
-                if len(added_unreported_drains) > 0:  # Only check spacing if we have existing drains
-                    for existing_drain in added_unreported_drains:
-                        if existing_drain['cauldron_id'] != cauldron_id:
-                            existing_start = datetime.fromisoformat(existing_drain['drain_start_timestamp'].replace('Z', '+00:00'))
-                            existing_end = datetime.fromisoformat(existing_drain['drain_end_timestamp'].replace('Z', '+00:00'))
-                        
-                            time_diff_start = abs((drain_start - existing_start).total_seconds() / 3600)  # hours
-                            time_diff_end = abs((drain_start - existing_end).total_seconds() / 3600)  # hours
-                        
-                            if time_diff_start < 1.0 or time_diff_end < 1.0:
-                                too_close_other = True
-                                break
-            
-                if too_close_other:
-                    continue  # Skip this attempt and try again
-            
                 # Unreported drains - ensure significant drain amounts that show visible drops
                 fill_rate = fill_rates[cauldron_id]
+                base_drain_rate = drain_rates[cauldron_id]
+                net_drain_rate = base_drain_rate  # Net drain rate = base drain rate
+                
+                # Calculate maximum net_drain that ensures gross_drain <= MAX_CAPACITY_PER_WITCH
+                # gross_drain = net_drain * (1 + fill_rate / net_drain_rate)
+                if net_drain_rate > 0:
+                    max_net_drain_for_capacity = MAX_CAPACITY_PER_WITCH / (1 + fill_rate / net_drain_rate)
+                else:
+                    max_net_drain_for_capacity = MAX_CAPACITY_PER_WITCH
             
                 # Calculate NET drain amount first (what will show as a drop)
-                # Target a MINIMUM net drop of 15-70L (capped at witch capacity)
+                # Target a MINIMUM net drop of 15-50L, capped to ensure gross_drain <= capacity
                 min_net_drop = random.uniform(15, 50)  # Reduced range
-                max_drain = min(level * 0.50, level - 15, MAX_CAPACITY_PER_WITCH)  # Cap at witch capacity
+                max_drain = min(level * 0.50, level - 15, max_net_drain_for_capacity)  # Cap to ensure gross <= capacity
             
                 # Generate NET drain amount (ensures minimum visible drop)
                 # We want at least min_net_drop as the net amount
                 if min_net_drop < max_drain:
                     drain_amount = random.uniform(min_net_drop, max_drain)
                 else:
-                    drain_amount = min(min_net_drop, MAX_CAPACITY_PER_WITCH)
+                    drain_amount = min(min_net_drop, max_net_drain_for_capacity)
             
-                # Cap at witch capacity
-                drain_amount = min(drain_amount, MAX_CAPACITY_PER_WITCH)
+                # Cap at max net drain for capacity (ensures gross drain <= MAX_CAPACITY_PER_WITCH)
+                drain_amount = min(drain_amount, max_net_drain_for_capacity)
             
-                # Use CONSTANT NET drain rate (same for all cauldrons)
-                # Calculate duration using constant net drain rate
-                net_drain_rate = CONSTANT_NET_DRAIN_RATE_L_PER_MIN  # Constant across all cauldrons
+                # Use per-cauldron drain rate
+                # Calculate duration using base drain rate for this cauldron
                 if net_drain_rate > 0:
-                    # Duration from net drain amount (using constant net drain rate)
+                    # Duration from net drain amount (using per-cauldron base drain rate)
                     drain_duration = int(drain_amount / net_drain_rate)
                 else:
                     # Fallback if net drain rate is somehow zero or negative
                     drain_duration = int(drain_amount / 0.1)  # Use 0.1 L/min as fallback
-            
+                
                 # Clamp duration to reasonable bounds (15-180 minutes)
                 drain_duration = max(15, min(180, drain_duration))
-            
+                
                 drain_end = drain_start + timedelta(minutes=drain_duration)
-            
-                # Skip if overlaps with tickets (direct overlap only, not near tickets)
-                # Allow drains to happen near tickets, just not during them
-                if overlaps_with_tickets(drain_start, drain_end):
-                    continue  # Only skip if directly overlapping
-            
+                
+                # Check if this drain overlaps with tickets (need 30 min gap)
+                if overlaps_with_tickets(drain_start, drain_end, min_gap_minutes=30):
+                    continue  # Skip if too close to a ticket
+                
+                # Check if this drain overlaps with other unreported drains on same cauldron (need 30 min gap)
+                if overlaps_with_unreported_drains(drain_start, drain_end, cauldron_id, added_unreported_drains, min_gap_minutes=30):
+                    continue  # Skip if too close to another unreported drain on same cauldron
+                
                 # Recalculate fill_during_drain with actual duration
                 fill_during_drain = fill_rate * drain_duration
+                
+                # Calculate gross drain for verification
+                gross_drain = drain_amount + fill_during_drain
+                
+                # Final safety check: ensure gross_drain doesn't exceed capacity
+                if gross_drain > MAX_CAPACITY_PER_WITCH:
+                    # Adjust net_drain to keep gross_drain within capacity
+                    if net_drain_rate > 0:
+                        max_net_for_gross = MAX_CAPACITY_PER_WITCH / (1 + fill_rate / net_drain_rate)
+                        drain_amount = max_net_for_gross
+                        drain_duration = int(drain_amount / net_drain_rate) if net_drain_rate > 0 else int(drain_amount / 0.1)
+                        drain_duration = max(15, min(180, drain_duration))
+                        drain_end = drain_start + timedelta(minutes=drain_duration)
+                        fill_during_drain = fill_rate * drain_duration
+                        gross_drain = drain_amount + fill_during_drain
             
                 # Calculate net drain per minute (for applying to historical data)
                 net_drain_per_min = drain_amount / drain_duration if drain_duration > 0 else 0
-            
+                
                 # Final verification - net_drain_per_min should be at least 0.3 L/min
                 if net_drain_per_min < 0.3:
-                    # Force larger NET drain to ensure visibility (but cap at witch capacity)
+                    # Force larger NET drain to ensure visibility (but cap to ensure gross <= capacity)
                     min_net_drop = 30
-                    drain_amount = min(min_net_drop + random.uniform(10, 30), MAX_CAPACITY_PER_WITCH)
-                    # Recalculate duration with new drain amount using constant net drain rate
-                    net_drain_rate = CONSTANT_NET_DRAIN_RATE_L_PER_MIN  # Constant across all cauldrons
+                    if net_drain_rate > 0:
+                        max_net = MAX_CAPACITY_PER_WITCH / (1 + fill_rate / net_drain_rate)
+                        drain_amount = min(min_net_drop + random.uniform(10, 30), max_net)
+                    else:
+                        drain_amount = min(min_net_drop + random.uniform(10, 30), MAX_CAPACITY_PER_WITCH)
+                    # Recalculate duration with new drain amount using per-cauldron drain rate
                     if net_drain_rate > 0:
                         drain_duration = int(drain_amount / net_drain_rate)
                     else:
@@ -789,6 +855,7 @@ else:
                     drain_duration = max(15, min(180, drain_duration))
                     drain_end = drain_start + timedelta(minutes=drain_duration)
                     fill_during_drain = fill_rate * drain_duration
+                    gross_drain = drain_amount + fill_during_drain
                     net_drain_per_min = drain_amount / drain_duration if drain_duration > 0 else 0
             
                 # Sanity check - reduced minimum
@@ -879,8 +946,8 @@ output_hist = {
         'end_date': end_date.strftime('%Y-%m-%dT%H:%M:%SZ'),
         'interval_minutes': 1,
         'fill_rates_l_per_min': fill_rates,  # Fill rates are constant for each cauldron throughout time
-        'constant_net_drain_rate_l_per_min': CONSTANT_NET_DRAIN_RATE_L_PER_MIN,  # Same for all cauldrons
-        'constant_net_drain_rate_l_per_hour': CONSTANT_NET_DRAIN_RATE_L_PER_HOUR,
+        'drain_rates_l_per_min': drain_rates,  # Base drain rates per cauldron (different for each)
+        'note': 'True drain rate (gross) = base_drain_rate + fill_rate for each cauldron',
         'noise_parameters': {
             'base_noise_range': [0.98, 1.02],
             'spike_chance': 0.01,
@@ -932,8 +999,11 @@ print("=" * 70)
 print(f"   Period: {start_date.strftime('%Y-%m-%d')} to {end_date.strftime('%Y-%m-%d')}")
 print(f"   Total minutes: {len(historical_data):,}")
 print(f"   Transport tickets: {len(transport_tickets)}")
-print(f"   Unreported drains: {len(unreported_drains)}")
-print(f"   Suspicious tickets: {sum(1 for t in transport_tickets if t.get('is_suspicious'))}")
+underreported_count = sum(1 for t in transport_tickets if t.get('is_suspicious') and t.get('suspicious_type') == 'underreported')
+suspicious_count = sum(1 for t in transport_tickets if t.get('is_suspicious'))
+print(f"   ✓ Underreported tickets: {underreported_count} ({underreported_count/len(transport_tickets)*100:.1f}% of tickets)")
+print(f"   ✓ Unreported drains: {len(unreported_drains)}")
+print(f"   Total suspicious tickets: {suspicious_count}")
 
 print(f"\nTicket distribution:")
 for cid in sorted(collections_per_cauldron.keys()):
