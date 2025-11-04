@@ -1,148 +1,75 @@
 {
+  "metadata": {
+    "total_unreported_drains": 8,
+    "date_range": {
+      "start": "2024-10-30T17:41:00Z",
+      "end": "2024-11-10T17:49:00Z"
+    }
+  },
   "unreported_drains": [
     {
+      "cauldron_id": "cauldron_003",
+      "drain_start_timestamp": "2024-11-02T21:56:00Z",
+      "drain_end_timestamp": "2024-11-03T00:56:00Z",
+      "estimated_amount_drained_liters": 70,
+      "duration_minutes": 180,
+      "note": "NO TICKET EXISTS - this is an unreported drain"
+    },
+    {
       "cauldron_id": "cauldron_002",
-      "drain_start_timestamp": "2024-10-30T11:39:00Z",
-      "drain_end_timestamp": "2024-10-30T13:09:00Z",
-      "estimated_amount_drained_liters": 43.6,
-      "duration_minutes": 90,
-      "converted_from_ticket": "TT_20241106_133",
-      "_visible_drop": 41.93605902259314
-    },
-    {
-      "cauldron_id": "cauldron_010",
-      "drain_start_timestamp": "2024-10-30T21:00:00Z",
-      "drain_end_timestamp": "2024-10-30T23:05:00Z",
-      "estimated_amount_drained_liters": 73.66,
-      "duration_minutes": 125,
-      "converted_from_ticket": "TT_20241030_007",
-      "_visible_drop": 71.82226784535905
-    },
-    {
-      "cauldron_id": "cauldron_011",
-      "drain_start_timestamp": "2024-10-30T22:21:30Z",
-      "drain_end_timestamp": "2024-10-31T00:15:30Z",
-      "estimated_amount_drained_liters": 60.6,
-      "duration_minutes": 114,
-      "converted_from_ticket": "TT_20241031_013",
-      "_visible_drop": 50.91514285359093
-    },
-    {
-      "cauldron_id": "cauldron_007",
-      "drain_start_timestamp": "2024-10-31T00:15:00Z",
-      "drain_end_timestamp": "2024-10-31T01:34:00Z",
-      "estimated_amount_drained_liters": 28.8,
-      "duration_minutes": 79,
-      "converted_from_ticket": "TT_20241031_008",
-      "_visible_drop": 18.792890130825242
-    },
-    {
-      "cauldron_id": "cauldron_007",
-      "drain_start_timestamp": "2024-10-31T01:23:00Z",
-      "drain_end_timestamp": "2024-10-31T03:51:00Z",
-      "estimated_amount_drained_liters": 86.6,
-      "duration_minutes": 148,
-      "_visible_drop": 75.72464645701439
+      "drain_start_timestamp": "2024-11-09T05:54:00Z",
+      "drain_end_timestamp": "2024-11-09T07:19:00Z",
+      "estimated_amount_drained_liters": 33.84,
+      "duration_minutes": 85,
+      "note": "NO TICKET EXISTS - this is an unreported drain"
     },
     {
       "cauldron_id": "cauldron_001",
-      "drain_start_timestamp": "2024-10-31T04:34:00Z",
-      "drain_end_timestamp": "2024-10-31T06:33:00Z",
-      "estimated_amount_drained_liters": 68.49,
-      "duration_minutes": 119,
-      "_visible_drop": 61.740375272600716
+      "drain_start_timestamp": "2024-11-07T03:11:00Z",
+      "drain_end_timestamp": "2024-11-07T06:11:00Z",
+      "estimated_amount_drained_liters": 70,
+      "duration_minutes": 180,
+      "note": "NO TICKET EXISTS - this is an unreported drain"
     },
     {
-      "cauldron_id": "cauldron_001",
-      "drain_start_timestamp": "2024-10-31T05:04:00Z",
-      "drain_end_timestamp": "2024-10-31T06:11:00Z",
-      "estimated_amount_drained_liters": 25.44,
-      "duration_minutes": 67,
-      "_visible_drop": 18.68731836655318
-    },
-    {
-      "cauldron_id": "cauldron_008",
-      "drain_start_timestamp": "2024-10-31T06:38:00Z",
-      "drain_end_timestamp": "2024-10-31T08:17:00Z",
-      "estimated_amount_drained_liters": 55.42,
-      "duration_minutes": 99,
-      "converted_from_ticket": "TT_20241031_010",
-      "_visible_drop": 52.241789314663414
-    },
-    {
-      "cauldron_id": "cauldron_006",
-      "drain_start_timestamp": "2024-10-31T09:07:00Z",
-      "drain_end_timestamp": "2024-10-31T10:27:00Z",
-      "estimated_amount_drained_liters": 38.84,
-      "duration_minutes": 80,
-      "converted_from_ticket": "TT_20241031_011",
-      "_visible_drop": 37.991373089824336
+      "cauldron_id": "cauldron_005",
+      "drain_start_timestamp": "2024-11-03T17:55:00Z",
+      "drain_end_timestamp": "2024-11-03T19:42:00Z",
+      "estimated_amount_drained_liters": 42.58,
+      "duration_minutes": 107,
+      "note": "NO TICKET EXISTS - this is an unreported drain"
     },
     {
       "cauldron_id": "cauldron_003",
-      "drain_start_timestamp": "2024-10-31T12:00:00Z",
-      "drain_end_timestamp": "2024-10-31T13:48:00Z",
-      "estimated_amount_drained_liters": 65.21,
-      "duration_minutes": 108,
-      "converted_from_ticket": "TT_20241031_012",
-      "_visible_drop": 61.49725104260118
-    },
-    {
-      "cauldron_id": "cauldron_005",
-      "drain_start_timestamp": "2024-10-31T14:50:30Z",
-      "drain_end_timestamp": "2024-10-31T16:20:30Z",
-      "estimated_amount_drained_liters": 42.76,
-      "duration_minutes": 90,
-      "converted_from_ticket": "TT_20241030_015",
-      "_visible_drop": 41.223594698947096
-    },
-    {
-      "cauldron_id": "cauldron_009",
-      "drain_start_timestamp": "2024-11-07T00:33:00Z",
-      "drain_end_timestamp": "2024-11-07T02:55:00Z",
-      "estimated_amount_drained_liters": 84.56,
-      "duration_minutes": 142,
-      "_visible_drop": 67.6
-    },
-    {
-      "cauldron_id": "cauldron_004",
-      "drain_start_timestamp": "2024-11-08T01:40:00Z",
-      "drain_end_timestamp": "2024-11-08T03:46:00Z",
-      "estimated_amount_drained_liters": 69.25,
-      "duration_minutes": 126,
-      "_visible_drop": 55.4
-    },
-    {
-      "cauldron_id": "cauldron_011",
-      "drain_start_timestamp": "2024-11-06T05:59:00Z",
-      "drain_end_timestamp": "2024-11-06T07:09:00Z",
-      "estimated_amount_drained_liters": 23.31,
-      "duration_minutes": 70,
+      "drain_start_timestamp": "2024-11-09T10:53:00Z",
+      "drain_end_timestamp": "2024-11-09T13:53:00Z",
+      "estimated_amount_drained_liters": 70,
+      "duration_minutes": 180,
       "note": "NO TICKET EXISTS - this is an unreported drain"
     },
     {
-      "cauldron_id": "cauldron_004",
-      "drain_start_timestamp": "2024-11-06T01:26:00Z",
-      "drain_end_timestamp": "2024-11-06T02:43:00Z",
-      "estimated_amount_drained_liters": 22.73,
-      "duration_minutes": 77,
+      "cauldron_id": "cauldron_010",
+      "drain_start_timestamp": "2024-11-10T17:49:00Z",
+      "drain_end_timestamp": "2024-11-10T19:40:00Z",
+      "estimated_amount_drained_liters": 43.75,
+      "duration_minutes": 111,
+      "note": "NO TICKET EXISTS - this is an unreported drain"
+    },
+    {
+      "cauldron_id": "cauldron_008",
+      "drain_start_timestamp": "2024-11-06T12:41:00Z",
+      "drain_end_timestamp": "2024-11-06T13:45:00Z",
+      "estimated_amount_drained_liters": 24.24,
+      "duration_minutes": 64,
       "note": "NO TICKET EXISTS - this is an unreported drain"
     },
     {
       "cauldron_id": "cauldron_005",
-      "drain_start_timestamp": "2024-11-06T04:32:00Z",
-      "drain_end_timestamp": "2024-11-06T06:04:00Z",
-      "estimated_amount_drained_liters": 45.52,
-      "duration_minutes": 92,
+      "drain_start_timestamp": "2024-10-30T17:41:00Z",
+      "drain_end_timestamp": "2024-10-30T19:09:00Z",
+      "estimated_amount_drained_liters": 35.23,
+      "duration_minutes": 88,
       "note": "NO TICKET EXISTS - this is an unreported drain"
     }
-  ],
-  "metadata": {
-    "total_unreported_drains": 16,
-    "description": "Unreported drains - potions collected without tickets",
-    "date_range": {
-      "start": "2024-10-30T11:39:00Z",
-      "end": "2024-11-08T01:40:00Z"
-    }
-  }
+  ]
 }

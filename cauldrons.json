@@ -192,7 +192,7 @@
     {
       "courier_id": "courier_witch_01_01",
       "name": "Witch Aster",
-      "max_carrying_capacity": 500,
+      "max_carrying_capacity": 70,
       "shift": 1,
       "shift_name": "Night",
       "shift_hours": "00:00-08:00",
@@ -201,7 +201,7 @@
     {
       "courier_id": "courier_witch_01_02",
       "name": "Witch Blossom",
-      "max_carrying_capacity": 500,
+      "max_carrying_capacity": 70,
       "shift": 1,
       "shift_name": "Night",
       "shift_hours": "00:00-08:00",
@@ -210,7 +210,7 @@
     {
       "courier_id": "courier_witch_01_03",
       "name": "Witch Ivy",
-      "max_carrying_capacity": 500,
+      "max_carrying_capacity": 70,
       "shift": 1,
       "shift_name": "Night",
       "shift_hours": "00:00-08:00",
@@ -219,7 +219,7 @@
     {
       "courier_id": "courier_witch_01_04",
       "name": "Witch Juniper",
-      "max_carrying_capacity": 500,
+      "max_carrying_capacity": 70,
       "shift": 1,
       "shift_name": "Night",
       "shift_hours": "00:00-08:00",
@@ -228,7 +228,7 @@
     {
       "courier_id": "courier_witch_02_01",
       "name": "Witch Cedar",
-      "max_carrying_capacity": 500,
+      "max_carrying_capacity": 70,
       "shift": 2,
       "shift_name": "Day",
       "shift_hours": "08:00-16:00",
@@ -237,7 +237,7 @@
     {
       "courier_id": "courier_witch_02_02",
       "name": "Witch Dawn",
-      "max_carrying_capacity": 500,
+      "max_carrying_capacity": 70,
       "shift": 2,
       "shift_name": "Day",
       "shift_hours": "08:00-16:00",
@@ -246,7 +246,7 @@
     {
       "courier_id": "courier_witch_02_03",
       "name": "Witch Maple",
-      "max_carrying_capacity": 500,
+      "max_carrying_capacity": 70,
       "shift": 2,
       "shift_name": "Day",
       "shift_hours": "08:00-16:00",
@@ -255,7 +255,7 @@
     {
       "courier_id": "courier_witch_02_04",
       "name": "Witch Oak",
-      "max_carrying_capacity": 500,
+      "max_carrying_capacity": 70,
       "shift": 2,
       "shift_name": "Day",
       "shift_hours": "08:00-16:00",
@@ -264,7 +264,7 @@
     {
       "courier_id": "courier_witch_03_01",
       "name": "Witch Elm",
-      "max_carrying_capacity": 500,
+      "max_carrying_capacity": 70,
       "shift": 3,
       "shift_name": "Evening",
       "shift_hours": "16:00-24:00",
@@ -273,7 +273,7 @@
     {
       "courier_id": "courier_witch_03_02",
       "name": "Witch Fern",
-      "max_carrying_capacity": 500,
+      "max_carrying_capacity": 70,
       "shift": 3,
       "shift_name": "Evening",
       "shift_hours": "16:00-24:00",
@@ -282,7 +282,7 @@
     {
       "courier_id": "courier_witch_03_03",
       "name": "Witch Pine",
-      "max_carrying_capacity": 500,
+      "max_carrying_capacity": 70,
       "shift": 3,
       "shift_name": "Evening",
       "shift_hours": "16:00-24:00",
@@ -291,11 +291,623 @@
     {
       "courier_id": "courier_witch_03_04",
       "name": "Witch Sage",
-      "max_carrying_capacity": 500,
+      "max_carrying_capacity": 70,
       "shift": 3,
       "shift_name": "Evening",
       "shift_hours": "16:00-24:00",
       "description": "Witch Sage works the Evening shift (16:00-24:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_05",
+      "name": "Witch Luna",
+      "max_carrying_capacity": 70.0,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Luna works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_05",
+      "name": "Witch Willow",
+      "max_carrying_capacity": 70.0,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Willow works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_05",
+      "name": "Witch Rose",
+      "max_carrying_capacity": 70.0,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-00:00",
+      "description": "Witch Rose works the Evening shift (16:00-00:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_06",
+      "name": "Witch Aster",
+      "max_carrying_capacity": 70,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Aster works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_07",
+      "name": "Witch Blossom",
+      "max_carrying_capacity": 70,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Blossom works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_08",
+      "name": "Witch Ivy",
+      "max_carrying_capacity": 70,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Ivy works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_09",
+      "name": "Witch Juniper",
+      "max_carrying_capacity": 70,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Juniper works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_10",
+      "name": "Witch Luna",
+      "max_carrying_capacity": 70,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Luna works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_11",
+      "name": "Witch Mist",
+      "max_carrying_capacity": 70,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Mist works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_06",
+      "name": "Witch Cedar",
+      "max_carrying_capacity": 70,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Cedar works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_07",
+      "name": "Witch Dawn",
+      "max_carrying_capacity": 70,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Dawn works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_08",
+      "name": "Witch Maple",
+      "max_carrying_capacity": 70,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Maple works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_09",
+      "name": "Witch Oak",
+      "max_carrying_capacity": 70,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Oak works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_10",
+      "name": "Witch Willow",
+      "max_carrying_capacity": 70,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Willow works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_11",
+      "name": "Witch Sky",
+      "max_carrying_capacity": 70,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Sky works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_06",
+      "name": "Witch Elm",
+      "max_carrying_capacity": 70,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-24:00",
+      "description": "Witch Elm works the Evening shift (16:00-24:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_07",
+      "name": "Witch Fern",
+      "max_carrying_capacity": 70,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-24:00",
+      "description": "Witch Fern works the Evening shift (16:00-24:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_08",
+      "name": "Witch Pine",
+      "max_carrying_capacity": 70,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-24:00",
+      "description": "Witch Pine works the Evening shift (16:00-24:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_09",
+      "name": "Witch Sage",
+      "max_carrying_capacity": 70,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-24:00",
+      "description": "Witch Sage works the Evening shift (16:00-24:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_10",
+      "name": "Witch Rose",
+      "max_carrying_capacity": 70,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-24:00",
+      "description": "Witch Rose works the Evening shift (16:00-24:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_12",
+      "name": "Witch Ivy",
+      "max_carrying_capacity": 70,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Ivy works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_13",
+      "name": "Witch Jade",
+      "max_carrying_capacity": 70,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Jade works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_14",
+      "name": "Witch Luna",
+      "max_carrying_capacity": 70,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Luna works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_15",
+      "name": "Witch Nova",
+      "max_carrying_capacity": 70,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Nova works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_16",
+      "name": "Witch Raven",
+      "max_carrying_capacity": 70,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Raven works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_17",
+      "name": "Witch Storm",
+      "max_carrying_capacity": 70,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Storm works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_18",
+      "name": "Witch Willow",
+      "max_carrying_capacity": 70,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Willow works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_19",
+      "name": "Witch Zephyr",
+      "max_carrying_capacity": 70,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Zephyr works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_20",
+      "name": "Witch Ash",
+      "max_carrying_capacity": 70,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Ash works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_21",
+      "name": "Witch Birch",
+      "max_carrying_capacity": 70,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Birch works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_22",
+      "name": "Witch Cedar",
+      "max_carrying_capacity": 70,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Cedar works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_23",
+      "name": "Witch Dawn",
+      "max_carrying_capacity": 70,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Dawn works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_24",
+      "name": "Witch Ember",
+      "max_carrying_capacity": 70,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Ember works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_25",
+      "name": "Witch Frost",
+      "max_carrying_capacity": 70,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Frost works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_26",
+      "name": "Witch Gale",
+      "max_carrying_capacity": 70,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Gale works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_01_27",
+      "name": "Witch Hazel",
+      "max_carrying_capacity": 70,
+      "shift": 1,
+      "shift_name": "Night",
+      "shift_hours": "00:00-08:00",
+      "description": "Witch Hazel works the Night shift (00:00-08:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_12",
+      "name": "Witch Juniper",
+      "max_carrying_capacity": 70,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Juniper works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_13",
+      "name": "Witch Lark",
+      "max_carrying_capacity": 70,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Lark works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_14",
+      "name": "Witch Mist",
+      "max_carrying_capacity": 70,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Mist works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_15",
+      "name": "Witch Orion",
+      "max_carrying_capacity": 70,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Orion works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_16",
+      "name": "Witch Petal",
+      "max_carrying_capacity": 70,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Petal works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_17",
+      "name": "Witch Quill",
+      "max_carrying_capacity": 70,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Quill works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_18",
+      "name": "Witch River",
+      "max_carrying_capacity": 70,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch River works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_19",
+      "name": "Witch Star",
+      "max_carrying_capacity": 70,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Star works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_20",
+      "name": "Witch Thorn",
+      "max_carrying_capacity": 70,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Thorn works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_21",
+      "name": "Witch Vale",
+      "max_carrying_capacity": 70,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Vale works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_22",
+      "name": "Witch Wild",
+      "max_carrying_capacity": 70,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Wild works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_23",
+      "name": "Witch Azure",
+      "max_carrying_capacity": 70,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Azure works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_24",
+      "name": "Witch Blaze",
+      "max_carrying_capacity": 70,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Blaze works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_25",
+      "name": "Witch Coral",
+      "max_carrying_capacity": 70,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Coral works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_26",
+      "name": "Witch Dusk",
+      "max_carrying_capacity": 70,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Dusk works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_02_27",
+      "name": "Witch Echo",
+      "max_carrying_capacity": 70,
+      "shift": 2,
+      "shift_name": "Day",
+      "shift_hours": "08:00-16:00",
+      "description": "Witch Echo works the Day shift (08:00-16:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_11",
+      "name": "Witch Flame",
+      "max_carrying_capacity": 70,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-00:00",
+      "description": "Witch Flame works the Evening shift (16:00-00:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_12",
+      "name": "Witch Glow",
+      "max_carrying_capacity": 70,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-00:00",
+      "description": "Witch Glow works the Evening shift (16:00-00:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_13",
+      "name": "Witch Haze",
+      "max_carrying_capacity": 70,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-00:00",
+      "description": "Witch Haze works the Evening shift (16:00-00:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_14",
+      "name": "Witch Jewel",
+      "max_carrying_capacity": 70,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-00:00",
+      "description": "Witch Jewel works the Evening shift (16:00-00:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_15",
+      "name": "Witch Kite",
+      "max_carrying_capacity": 70,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-00:00",
+      "description": "Witch Kite works the Evening shift (16:00-00:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_16",
+      "name": "Witch Lace",
+      "max_carrying_capacity": 70,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-00:00",
+      "description": "Witch Lace works the Evening shift (16:00-00:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_17",
+      "name": "Witch Moon",
+      "max_carrying_capacity": 70,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-00:00",
+      "description": "Witch Moon works the Evening shift (16:00-00:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_18",
+      "name": "Witch Nyx",
+      "max_carrying_capacity": 70,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-00:00",
+      "description": "Witch Nyx works the Evening shift (16:00-00:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_19",
+      "name": "Witch Opal",
+      "max_carrying_capacity": 70,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-00:00",
+      "description": "Witch Opal works the Evening shift (16:00-00:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_20",
+      "name": "Witch Peak",
+      "max_carrying_capacity": 70,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-00:00",
+      "description": "Witch Peak works the Evening shift (16:00-00:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_21",
+      "name": "Witch Quartz",
+      "max_carrying_capacity": 70,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-00:00",
+      "description": "Witch Quartz works the Evening shift (16:00-00:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_22",
+      "name": "Witch Reed",
+      "max_carrying_capacity": 70,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-00:00",
+      "description": "Witch Reed works the Evening shift (16:00-00:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_23",
+      "name": "Witch Sage",
+      "max_carrying_capacity": 70,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-00:00",
+      "description": "Witch Sage works the Evening shift (16:00-00:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_24",
+      "name": "Witch Tide",
+      "max_carrying_capacity": 70,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-00:00",
+      "description": "Witch Tide works the Evening shift (16:00-00:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_25",
+      "name": "Witch Umbra",
+      "max_carrying_capacity": 70,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-00:00",
+      "description": "Witch Umbra works the Evening shift (16:00-00:00)"
+    },
+    {
+      "courier_id": "courier_witch_03_26",
+      "name": "Witch Vex",
+      "max_carrying_capacity": 70,
+      "shift": 3,
+      "shift_name": "Evening",
+      "shift_hours": "16:00-00:00",
+      "description": "Witch Vex works the Evening shift (16:00-00:00)"
     }
   ],
   "network": {
