@@ -1,7 +1,6 @@
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 USER $APP_UID
 WORKDIR /app
-ENV ASPNETCORE_URLS="http://0.0.0.0:${PORT}"
 
 ENV TZ=America/Chicago
 
@@ -23,4 +22,4 @@ WORKDIR /app
 COPY --from=publish /app/publish .
 
 ENV DOTNET_EnableDiagnostics=0
-ENTRYPOINT ["dotnet", "HackUTD2025.API.dll"]
+ENTRYPOINT ["sh", "-c", "export ASPNETCORE_URLS=\"http://0.0.0.0:${PORT}\" && exec dotnet HackUTD2025.API.dll"]
