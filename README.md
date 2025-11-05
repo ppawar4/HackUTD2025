@@ -14,12 +14,10 @@ You'll receive historical and real-time cauldron level data, Potion Transport Ti
 
 ### Input Data
 
-- **List of Cauldrons**: Each cauldron has a unique ID, a name, a latitude/longitude, and a maximum storage volume. Each cauldron has its own fill rate (L/min) and drain rate (L/min), which can differ between cauldrons. Importantly, potion continues to flow into each cauldron even while it is being drained, and this continuous flow is reflected in the ticket volumes.
-- **Potion Network Map**: Includes all cauldrons as nodes with their locations, and edges representing broomstick travel paths with travel times. The map also contains the Enchanted Market. This map is used to find an optimized schedule for the witches to ensure no cauldron ever overflows, accounting for the travel time between cauldrons and to the Enchanted Market.
-- **Potion Transport Tickets**: Tickets are received at the end of each day and contain only a date (not a specific timestamp). Each ticket records the amount of potion collected and transported. The volume recorded on each ticket includes both the level change in the cauldron and the potion that was generated during the drain period (based on the cauldron's fill rate). Since tickets only have dates, you must match them to the actual drain events that occurred during that day by verifying that the volumes on the tickets match the drains for that day.
+- **List of Cauldrons**: Each cauldron has a unique ID, a name, a latitude/longitude, and a maximum storage volume. 
+- **Potion Network Map**: Includes all cauldrons as nodes with their locations, and edges representing travel paths with travel times. The map also contains the Enchanted Market. This map is used to find an optimized schedule for the witches to ensure no cauldron ever overflows, accounting for the travel time between cauldrons and to the Enchanted Market.
+- **Potion Transport Tickets**: Tickets are received at the end of each day and contain only a date. Each ticket records the amount of potion collected and transported. 
 - **Historical Cauldron Level Data**: Minute-by-minute potion volumes for each cauldron, covering approximately one week. This data shows how potion levels change over time, including the effects of continuous filling and periodic draining.
-- **Witch Schedules**: Multiple courier witches work on rotating schedules to collect potions from cauldrons and transport them to the Enchanted Market. An optimized schedule can be generated using the potion network map to ensure no cauldron overflows, taking into account each cauldron's fill rate, drain rate, travel times, and the continuous flow of potion into cauldrons during collection.
-- **Real-Time Potion Feed (Optional)**: A websocket stream providing live potion level updates for each cauldron every minute.
 
 ### Expected Output
 
@@ -30,6 +28,17 @@ Your solution should provide:
 - **Real-Time Monitoring**: Live feed of potion levels in all cauldrons as new data arrives.
 - **Discrepancy Detection**: Since tickets arrive at the end of the day with only dates (no timestamps), you must match tickets to the actual drain events that occurred during that day. Verify that the volumes on the tickets match the drains for that day by comparing ticket volumes (which include level change + potion generated during drain) to the actual drain events recorded in the historical data. Identify any tickets that appear to have transported more or less than what left the cauldron, highlighting potential unlogged potion drains or discrepancies.
 
+### Things to Keep in Mind
+
+- **Continuous Potion Flow During Drainage**: While potion is being drained from a cauldron, more potion continues to accumulate into the tank at the cauldron's fill rate. This means the total volume collected includes both the level change and the potion generated during the drain period.
+- **Unload Time**: Witches take 15 minutes to unload each time they arrive at the market. This must be accounted for when scheduling multiple trips.
+- **Per-Cauldron Rates**: Each cauldron has its own unique fill rate and drain rate, which can differ significantly between cauldrons. These rates determine how quickly potion accumulates and how quickly it can be collected.
+
 ### Bonus Output
 
-**Optimized Courier Routes & Forecasting**: Using the potion network map, determine what is the minimum number of witches that can run the whole operation, and create an optimized schedule for those witches to ensure no cauldron ever overflows. This optimization must account for each cauldron's unique fill rate and drain rate, the continuous flow of potion into cauldrons even during drainage, travel times between cauldrons and to the Enchanted Market, and the goal of minimizing the number of witches needed. Predict cauldron fill levels and generate efficient courier routes that prevent overflow while accounting for all these factors. Create an optimal schedule for the minimum number of witches required to maintain the entire operation. Visualize these routes on the map to ensure timely deliveries and prevent cauldron overflow.
+**Optimized Courier Routes & Forecasting**: Using the potion network map, determine what is the minimum number of witches that can run the whole operation. Predict cauldron fill levels and generate efficient courier routes that prevent overflow while accounting for all these factors. Create an optimal schedule for the minimum number of witches required to maintain the entire operation. Visualize these routes on the map to ensure timely deliveries and prevent cauldron overflow.
+
+## Checkout our Workshop!
+
+**Intro to React Development: Your First Web Application** at 5:30pm on Saturday!
+
