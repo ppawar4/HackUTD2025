@@ -1,0 +1,23 @@
+@HostAddress = https://localhost:7126
+
+GET {{HostAddress}}/api/Data
+Accept: application/json
+
+###
+
+GET {{HostAddress}}/api/Data?start_date=1730264460
+Accept: application/json
+
+###
+
+GET {{HostAddress}}/api/Data/metadata
+Accept: application/json
+
+###
+# curl -X 'GET' 
+#  'http://localhost:8080/HackUTD2025/api/Information/graph/neighbors/cauldron_001' 
+#  -H 'accept: text/plain'
+GET {{HostAddress}}/api/Information/graph/neighbors/cauldron_001
+accept: text/plain
+
+###
