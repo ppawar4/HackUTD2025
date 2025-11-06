@@ -107,23 +107,27 @@
                     the historical data. Identify any tickets that appear to have transported more or less than what
                     left the cauldron, highlighting potential unlogged potion drains or discrepancies.
                 </li>
+				<li><strong>Dynamic Ticket Matching</strong>: Your dashboard must implement a robust ticket matching 
+					algorithm that works dynamically with changing data. The ticket data provided via the API may change 
+					during judging, but your system should still correctly identify which tickets are valid and which are 
+					suspicious.
+                </li>
             </ul>
         </section>
 
         <section class="panel" id="considerations">
             <h2>Things to Keep in Mind <a class="anchor" href="#considerations">🤔</a></h2>
             <ul>
-                <li><strong>Continuous Potion Flow During Drainage</strong>: While potion is being drained from a
-                    cauldron, more potion continues to accumulate into the tank at the cauldron's fill rate. This means
-                    the total volume collected includes both the level change and the potion generated during the drain
-                    period.
-                </li>
-                <li><strong>Unload Time</strong>: Witches take 15 minutes to unload each time they arrive at the market.
-                    This must be accounted for when scheduling multiple trips.
-                </li>
-                <li><strong>Per-Cauldron Rates</strong>: Each cauldron has its own unique fill rate and drain rate,
+				<li><strong>Per-Cauldron Rates</strong>: Each cauldron has its own unique fill rate and drain rate,
                     which can differ significantly between cauldrons. These rates determine how quickly potion
                     accumulates and how quickly it can be collected.
+                </li>
+				<li><strong>Continuous Potion Flow During Drainage</strong>: While potion is being drained from a
+                    cauldron, more potion continues to accumulate into the tank at the cauldron's fill rate. The total 
+					drain volumes should reflect this. 
+                </li>
+                <li><strong>Unload Time</strong>: Witches take 15 minutes to unload each time they arrive at the market.
+                    This must be accounted for when scheduling trips.
                 </li>
             </ul>
         </section>
